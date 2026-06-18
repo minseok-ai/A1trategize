@@ -48,6 +48,17 @@ The public repository is a technical-report space. It does not include implement
 
 ---
 
+## 🚀 Recent Updates (Changelog)
+
+### Advanced PPTX Generation & Native Table Support
+*Recent code updates (diff) have significantly improved PPTX document generation, visualization, and stability.*
+
+- **Native Markdown Table to PPTX Conversion**: Implemented the `_add_table_slide_optimized` function, which parses markdown tables (`|...|`) from the report and seamlessly converts them into native Table shapes within the PowerPoint slides.
+- **Dynamic Text & Table Pagination**: When tables and text are mixed, the pagination logic now intelligently separates slides before and after the table. This enhances readability and prevents content from overflowing off the slide.
+- **Safe Korean Filename Generation**: Improved the regular expression (`\uAC00-\uD7A3`) for PPTX file exports, ensuring that Korean topic keywords are safely preserved in the filename without causing download errors or missing characters.
+
+---
+
 ## Core Features
 
 ### 3-Domain Prompt Architecture
