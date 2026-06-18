@@ -1,0 +1,10 @@
+*
+
+!.gitignore
+!README.md
+!README.en.md
+!LICENSE
+!logo.png
+!static/
+!static/favicon.svg
+!static/favicon.ico

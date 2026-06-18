@@ -1,0 +1,51 @@
+﻿Minseok Song & Company Technical Report Sharing License v1.0
+
+Copyright (c) 2025-2026 Minseok Song
+
+This license applies only to the public-facing technical reports, release notes,
+architecture descriptions, non-sensitive diagrams, and documentation materials
+included in this repository version.
+
+This license does not apply to private source code, prompts, model routing
+logic, knowledge bases, datasets, generated client reports, API configuration,
+deployment secrets, unpublished assets, or any implementation artifact that is
+not intentionally included in the public documentation package.
+
+Permission is granted, free of charge, to share, copy, redistribute, cite,
+reference, and publicly link to the licensed documentation, provided that:
+
+1. Attribution is preserved.
+   Any shared copy, citation, excerpt, or reference must identify the project as
+   Minseok Song & Company and credit Minseok Song as the author.
+
+2. The documentation context is not misrepresented.
+   The materials may not be presented as source code, a working implementation,
+   an official product release, or a complete disclosure of the private system.
+
+3. Private implementation rights are not granted.
+   No permission is granted to use, reproduce, reconstruct, reverse engineer,
+   publish, sublicense, sell, or distribute the underlying source code, prompts,
+   model configurations, domain knowledge bases, validation logic, or operational
+   infrastructure.
+
+4. Patent, trademark, and trade-secret rights are reserved.
+   No patent license, trademark license, trade-secret license, or right to use
+   protected project branding is granted by this document.
+
+5. Derivative technical documents must remain clearly attributed.
+   Summaries, reviews, translations, or commentary based on the licensed
+   documentation are allowed, but they must not imply endorsement by the author
+   and must not remove attribution.
+
+6. Sensitive or private material remains excluded.
+   If a file, excerpt, dataset, generated report, configuration value, credential,
+   or internal implementation detail is accidentally disclosed, this license does
+   not grant permission to use or redistribute it.
+
+The licensed documentation is provided "as is", without warranty of any kind,
+express or implied, including but not limited to warranties of accuracy,
+fitness for a particular purpose, non-infringement, or availability. In no event
+shall the author be liable for any claim, damages, or other liability arising
+from the use, interpretation, sharing, or reliance on the documentation.
+
+All rights not expressly granted in this license are reserved.
