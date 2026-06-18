@@ -50,12 +50,20 @@ The public repository is a technical-report space. It does not include implement
 
 ## 🚀 Recent Updates (Changelog)
 
-### Advanced PPTX Generation & Native Table Support
-*Recent code updates (diff) have significantly improved PPTX document generation, visualization, and stability.*
+### Pipeline Control & Automated Validation Enhancements (main.py)
+*Recent code updates (diff) have greatly strengthened the quality control and stability logic of the main pipeline.*
 
-- **Native Markdown Table to PPTX Conversion**: Implemented the `_add_table_slide_optimized` function, which parses markdown tables (`|...|`) from the report and seamlessly converts them into native Table shapes within the PowerPoint slides.
-- **Dynamic Text & Table Pagination**: When tables and text are mixed, the pagination logic now intelligently separates slides before and after the table. This enhances readability and prevents content from overflowing off the slide.
-- **Safe Korean Filename Generation**: Improved the regular expression (`\uAC00-\uD7A3`) for PPTX file exports, ensuring that Korean topic keywords are safely preserved in the filename without causing download errors or missing characters.
+- **Critic Persona & QA Loop Modularization**: The previously hardcoded QA logic in `main.py` was removed and modularized into `perform_iterative_qa_loop` driven by `config.py` (pass thresholds and max iterations). Furthermore, an explicit "Self-Correction" phase using a 'Critic' persona is now executed immediately after the initial draft to maximize logical rigor.
+- **Detailed Link Verification Logging**: The `verify_and_clean_links` process now tracks the specific reasons for dead or invalid links and outputs a detailed validation log to the terminal.
+- **Financial Disclaimer Validation**: Integrated the `validate_financial_disclaimers` function right before saving the final report. This automatically ensures that mandatory disclaimers are included if any financial or numerical data is detected.
+
+### Advanced PPTX Generation (Template-based Consulting Style)
+*Document generation, styling, and stability have been further improved.*
+
+- **Design Template Integration**: Replaced hardcoded blank slides with a dedicated `pptx_template.pptx`. If the template is missing, the system now automatically generates a default template (`create_default_pptx_template`) and applies it.
+- **Standardized Title Slides**: Unified the first slide title as "Strategic Insight Report" and elegantly formatted the user's question (subject) and report date in the subtitle, achieving a professional consulting report style.
+- **Lightweight Pagination**: Removed the complex character-count-based dynamic pagination. It now cleanly and reliably splits slides based on a fixed 12-item threshold.
+- **Consistent Filename & Maintained Table Support**: To completely prevent encoding or regex errors during file downloads, the output filename is now fixed as `Consulting_Report_{timestamp}.pptx`. The native PPTX Table parsing for markdown tables (`|...|`) remains fully supported and stabilized.
 
 ---
 
