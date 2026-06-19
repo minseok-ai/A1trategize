@@ -50,12 +50,13 @@ The public repository is a technical-report space. It does not include implement
 
 ## 🚀 Recent Updates (Changelog)
 
-### Comprehensive Code Documentation & Model Upgrades (10 Files Refactored)
-*Recent code updates (diff) have significantly improved the maintainability and generation quality of the entire project.*
+### Massive Architecture Refactoring & FastAPI Migration (v0.4)
+*Through the modification and addition of over 27 files, the prototype-level codebase has been transformed into an enterprise-grade API service architecture.*
 
-- **Improved Readability & Maintainability**: Added detailed docstrings (function/class descriptions) across 10 core modules (including `main.py`, `utils.py`, `report_generator.py`) to clearly document the roles of each pipeline step and utility.
-- **State-of-the-Art Model Integration (`config.py`)**: Upgraded the drafting and revision models to the latest `gemini-3-pro-preview` and the review model to `solar-pro3`, maximizing the logical reasoning and sentence completion quality of the reports.
-- **Critical Bug Fixes & Stabilization**: Fixed the parsing error regarding the `citations` field from the Perplexity API. Improved the XML extraction logic for the Critic persona to reliably extract only the necessary tags. Additionally, Adequacy Scoring (v3) now strictly enforces a hard fail (triggering mandatory supplementary research) if the LLM quality score drops below the threshold.
+- **Service Architecture Decoupling & FastAPI Introduction (`pipeline_service.py`, `server.py`)**: Decoupled the core pipeline logic from the monolithic `main.py` script into a UI-agnostic service layer. Furthermore, to expand into an enterprise-grade API service, an independent `FastAPI` backend server (`server.py`) and a static HTML/JS frontend were newly introduced.
+- **Massive Streamlit UI Upgrade (`app.py`)**: Instead of abandoning the original UI, it was significantly upgraded. Introduced a visually intuitive 'Pipeline Tracker' to show real-time progress, and a 'Dynamic Model Selector Sidebar' allowing users to assign specific LLM models (e.g., Research, Critic, Draft) on the fly.
+- **LLM Router Pattern Implementation (`llm_router.py`, `llm_providers.py`)**: Abstracted hardcoded LLM API calls by implementing an object-oriented router pattern that dynamically controls routing among multiple models (Gemini, Solar, Sonar) based on `PipelineRole`.
+- **Dynamic Prompt Loading & New Domain Added**: Added `prompt_runtime.py` and `prompt_selector.py` modules to dynamically load and select prompts. Furthermore, a dedicated prompt module for 'Application Docs' (`prompts_application_docs.py`) was newly created, branching out from the broader Career analysis domain.
 
 ---
 
