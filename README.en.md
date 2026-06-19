@@ -50,20 +50,12 @@ The public repository is a technical-report space. It does not include implement
 
 ## 🚀 Recent Updates (Changelog)
 
-### Pipeline Control & Automated Validation Enhancements (main.py)
-*Recent code updates (diff) have greatly strengthened the quality control and stability logic of the main pipeline.*
+### Comprehensive Code Documentation & Model Upgrades (10 Files Refactored)
+*Recent code updates (diff) have significantly improved the maintainability and generation quality of the entire project.*
 
-- **Critic Persona & QA Loop Modularization**: The previously hardcoded QA logic in `main.py` was removed and modularized into `perform_iterative_qa_loop` driven by `config.py` (pass thresholds and max iterations). Furthermore, an explicit "Self-Correction" phase using a 'Critic' persona is now executed immediately after the initial draft to maximize logical rigor.
-- **Detailed Link Verification Logging**: The `verify_and_clean_links` process now tracks the specific reasons for dead or invalid links and outputs a detailed validation log to the terminal.
-- **Financial Disclaimer Validation**: Integrated the `validate_financial_disclaimers` function right before saving the final report. This automatically ensures that mandatory disclaimers are included if any financial or numerical data is detected.
-
-### Advanced PPTX Generation (Template-based Consulting Style)
-*Document generation, styling, and stability have been further improved.*
-
-- **Design Template Integration**: Replaced hardcoded blank slides with a dedicated `pptx_template.pptx`. If the template is missing, the system now automatically generates a default template (`create_default_pptx_template`) and applies it.
-- **Standardized Title Slides**: Unified the first slide title as "Strategic Insight Report" and elegantly formatted the user's question (subject) and report date in the subtitle, achieving a professional consulting report style.
-- **Lightweight Pagination**: Removed the complex character-count-based dynamic pagination. It now cleanly and reliably splits slides based on a fixed 12-item threshold.
-- **Consistent Filename & Maintained Table Support**: To completely prevent encoding or regex errors during file downloads, the output filename is now fixed as `Consulting_Report_{timestamp}.pptx`. The native PPTX Table parsing for markdown tables (`|...|`) remains fully supported and stabilized.
+- **Improved Readability & Maintainability**: Added detailed docstrings (function/class descriptions) across 10 core modules (including `main.py`, `utils.py`, `report_generator.py`) to clearly document the roles of each pipeline step and utility.
+- **State-of-the-Art Model Integration (`config.py`)**: Upgraded the drafting and revision models to the latest `gemini-3-pro-preview` and the review model to `solar-pro3`, maximizing the logical reasoning and sentence completion quality of the reports.
+- **Critical Bug Fixes & Stabilization**: Fixed the parsing error regarding the `citations` field from the Perplexity API. Improved the XML extraction logic for the Critic persona to reliably extract only the necessary tags. Additionally, Adequacy Scoring (v3) now strictly enforces a hard fail (triggering mandatory supplementary research) if the LLM quality score drops below the threshold.
 
 ---
 
