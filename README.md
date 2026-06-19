@@ -50,14 +50,13 @@
 
 ## 🚀 최근 업데이트 (Changelog)
 
-### 하네스 엔진 통합 및 독립 평가/벤치마킹 시스템 구축 (v0.7)
-*개별 노드로 파편화되었던 가드레일을 QA 체크리스트 루프 내로 우아하게 통합(Unified DAG)하고, 운영 환경과 분리된 독립 평가 프레임워크를 도입했습니다.*
+### Link Vault 및 NNFC 참조 정규화 시스템 구축 (v0.8)
+*LLM의 환각(Hallucination)으로 인한 가짜 URL과 존재하지 않는 장비 참조를 원천 차단하기 위해 Link Vault와 정규화(Canonicalization) 엔진을 도입했습니다.*
 
-- **통합 DAG 아키텍처 (Unified Node Flow)**: 이전 버전에서 조건부 엣지로 복잡하게 라우팅되던 `SafetyValidationNode` 등의 도메인 특화 가드레일 분기들을 완전히 제거했습니다. 대신, NNFC 장비 안전성 검증 및 도메인 제약 사항을 `QALoopNode` 내부의 필수 체크리스트 항목으로 직접 통합하여, 모든 도메인이 동일한 10단계의 깔끔한 그래프 구조(DAG)를 공유하도록 토폴로지를 단순화했습니다.
-- **독립 평가 프레임워크 도입 (`eval_harness.py`)**: 프로덕션 파이프라인과 완벽히 분리된 `EvalHarness` 엔진을 신설했습니다. `EvalDataset` 및 `EvalCase` 구조체를 통해 파이프라인 품질, 분류 정확도, 키워드 적중률, 노드별 소요 시간(Latency), 에러율 등을 오프라인 환경에서 대규모로 자동 벤치마킹하고 A/B 테스트할 수 있는 기반을 마련했습니다.
-- **SKT ADOTX 모델 네이티브 지원 (`llm_providers.py`)**: 라우터 시스템에 SKTProvider를 정식 연동하여, 기존 OpenAI, Upstage, Perplexity, Gemini에 이어 SKT 모델도 파이프라인 내 모든 에이전트 역할에 동적으로 할당할 수 있게 되었습니다.
-- **코드베이스 전체 메타데이터/Docstring 고도화**: 하네스 상태 객체(`PipelineState`), 조건부 엣지 제어 로직, 노드 실행 주기에 대한 방대한 분량의 Docstring을 전면 적용하여 시스템 가독성과 유지보수성을 극대화했습니다. 
-- **NNFC 보고서 후처리 모듈화 (`customer_output.py`)**: NNFC 고객 요약본과 엔지니어 상세본을 분할하고 면책 조항을 강제 삽입하는 로직을 별도의 독립 모듈로 정교하게 추출했습니다.
+- **Link Vault 시스템 도입**: 비즈니스, 커리어, 특허 도메인에서 LLM이 본문에 직접 URL을 생성하는 것을 금지했습니다. 대신 백엔드의 Link Vault 시스템이 검증된 URL만 사후에 자동 주입하도록 프롬프트 엔진을 전면 개편하여 "가짜 링크(Dead Link)" 문제를 근본적으로 해결했습니다.
+- **NNFC 장비 참조 정규화 (Canonicalization)**: `NNFCEquipmentEngine`이 단순히 장비 ID를 검증하는 것을 넘어, 본문에 등장하는 장비명을 `장비명 (ID: 123) [NNFC DB: 123]` 형태의 표준 포맷으로 자동 정규화합니다. DB에 없는 허위 ID가 발견될 경우 맹목적으로 수정하지 않고 `[NNFC equipment reference requires engineer confirmation]` 형태의 알림으로 부드럽게 치환하여 엔지니어의 확정을 유도합니다.
+- **Alibaba LLM 네이티브 연동 및 Reasoning Block 정제**: 프론트엔드 라우터에 Alibaba 모델 지원을 공식 추가했습니다. 또한 DeepSeek, Solar 등 추론형(Reasoning) 모델들이 출력하는 `<think>`, `<details>`, ````thinking```` 등 내부 사고 과정을 파싱 단계에서 자동으로 제거하여, 보고서 결과물에 불필요한 메타 텍스트가 노출되지 않도록 UI 파이프라인을 정제했습니다.
+- **시간대(Timezone) 라이브러리 현대화**: 외부 의존성인 `pytz` 모듈을 완전히 제거하고, Python 3.9+ 표준 라이브러리인 `zoneinfo.ZoneInfo`로 모든 도메인 프롬프트의 시간대 처리 로직을 마이그레이션하여 성능과 호환성을 높였습니다.
 
 
 ---
