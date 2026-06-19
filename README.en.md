@@ -50,13 +50,14 @@ This entire process is streamed in real-time to the frontend via Server-Sent Eve
 
 ## 🚀 Recent Updates (Changelog)
 
-### New Deep-Tech Domain & Graph-based Engine (v0.5)
-*Expanded with a specialized semiconductor process domain and completely overhauled the pipeline into a graph-based Harness engine.*
+### Checklist-based QA & Domain Guardrail Engine (v0.6)
+*Moved away from simple score-based evaluation, building a precise checklist and guardrail system that strictly enforces mandatory requirements for each domain.*
 
-- **New Deep-Tech Domain (NNFC Semiconductor Process) (`domains/nnfc/`)**: Expanding beyond Business, Career, and IP, a new 'Semiconductor Process Recipe Engineering' domain has been added. Equipped with massive JSON knowledge bases for equipment specs and a dedicated control engine (`nnfc_equipment_engine.py`), ultra-precise deep-tech consulting is now possible.
-- **Graph-based Pipeline Harness Engine (`harness_engine.py`)**: Replaced the traditional unidirectional pipeline with a new state machine-style (Harness) execution engine based on Nodes and Conditional Edges. This enables enterprise-grade control, including pipeline state telemetry, checkpoint management, and real-time SSE event streaming.
-- **Domain Modularization & Legacy System Cleanup**: Perfectly isolated and modularized all prompts and knowledge bases into four distinct domain folders. Consequently, the incompatible Streamlit legacy UI (`app.py`) and fragmented scripts were entirely deleted, making the system significantly lighter and more secure.
-- **Massive Frontend Overhaul (`static/`)**: `app.js` and `style.css` were drastically expanded to visualize real-time pipeline node progress transmitted from the new Harness engine, and to fully support the dedicated UI/UX for the newly added NNFC domain.
+- **Checklist-based Dual QA Gates (`qa_gates.py`)**: Abandoned the subjective 'score' of the QA agent. Instead, it strictly validates mandatory checklist items per domain (e.g., business disclaimers, patent claim formats, prohibiting outcome guarantees in career mode) as JSON arrays. The pipeline only proceeds if all CRITICAL items pass.
+- **Domain-Specific Guardrail Validation Nodes (`harness_nodes.py`)**: Introduced dedicated validation nodes for the four major domains, inheriting from `DomainGuardrailValidationNode` within the Harness Engine. It cross-validates fatal domain errors (e.g., missing financial figures, code blocks in patent specs) using regex/keywords and forces self-correction with detailed Re-draft Briefs upon failure.
+- **Enhanced NNFC Deep-Tech Safety Validation**: The safety validation node for the semiconductor process mode was significantly reinforced. Integrated with `NNFCEquipmentEngine`, it blocks the generation of fabricated equipment IDs not present in the DB, and strictly cross-references maximum temperatures, available gases, and wafer sizes extracted from the context against equipment limits.
+- **Structured JSON Output Support for LLMs (`llm_providers.py`)**: Implemented the `generate_structured()` method for Upstage Solar and Perplexity models to force JSON object outputs, drastically reducing parsing errors and ensuring 100% reliable data structures. (Enabled high-performance reasoning mode for Solar-Pro3).
+
 
 ---
 
@@ -156,8 +157,9 @@ A1trategize/
 | Domain Selection & Routing | Automatic fallback to predefined keyword matching if LLM domain classification fails |
 | Harness Telemetry | Real-time tracking and diagnostics of execution duration and error rates per Node in the Harness Engine |
 | Adequacy Scoring | Evaluates the length, figures, references, and keyword frequency of collected data to trigger Supplementary Research |
-| Iterative QA Loop | Executes a limited number of Self-Correction loops based on the QA agent's quality score and approval |
-| Safety & Compliance | Enforces financial disclaimers and strictly validates NNFC semiconductor equipment ID specifications |
+| Checklist-First QA Gate | Moves beyond simple scores by prioritizing the passage of ALL CRITICAL items in a domain-specific JSON checklist |
+| Domain Guardrail Node | Strictly post-validates domain-specific rules via regex/keywords, such as forbidding code blocks in patents or outcome guarantees in resumes |
+| NNFC Safety Validation | Blocks fabricated equipment IDs and forces a Re-draft if the generated recipe exceeds equipment-specific limits for temperature, gas, or wafer size |
 
 ---
 
