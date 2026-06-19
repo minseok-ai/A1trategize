@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Technical_Report_Sharing-blue.svg" alt="Technical Report Sharing License" /></a>
-  <img src="https://img.shields.io/badge/Release-v0.5-lightgrey.svg" alt="Release v0.5" />
+  <img src="https://img.shields.io/badge/Release-v0.5-lightgrey.svg" alt="Release v0.9" />
   <img src="https://img.shields.io/badge/Patent-KR_10--2026--0009508-green.svg" alt="Patent KR 10-2026-0009508" />
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+" />
   <img src="https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI" />
@@ -50,13 +50,14 @@
 
 ## 🚀 최근 업데이트 (Changelog)
 
-### Link Vault 및 NNFC 참조 정규화 시스템 구축 (v0.8)
-*LLM의 환각(Hallucination)으로 인한 가짜 URL과 존재하지 않는 장비 참조를 원천 차단하기 위해 Link Vault와 정규화(Canonicalization) 엔진을 도입했습니다.*
+### NNFC/Link Vault 결정론적(Deterministic) 제어 고도화 (v0.9)
+*하네스 엔진의 파이프라인 진단 보고서(current_harness_diagnosis_2026-06-01)를 바탕으로, LLM의 추론에 의존하던 영역을 결정론적 시스템 제어로 전환하여 파이프라인 아키텍처의 안정성을 향상시켰습니다.*
 
-- **Link Vault 시스템 도입**: 비즈니스, 커리어, 특허 도메인에서 LLM이 본문에 직접 URL을 생성하는 것을 금지했습니다. 대신 백엔드의 Link Vault 시스템이 검증된 URL만 사후에 자동 주입하도록 프롬프트 엔진을 전면 개편하여 "가짜 링크(Dead Link)" 문제를 근본적으로 해결했습니다.
-- **NNFC 장비 참조 정규화 (Canonicalization)**: `NNFCEquipmentEngine`이 단순히 장비 ID를 검증하는 것을 넘어, 본문에 등장하는 장비명을 `장비명 (ID: 123) [NNFC DB: 123]` 형태의 표준 포맷으로 자동 정규화합니다. DB에 없는 허위 ID가 발견될 경우 맹목적으로 수정하지 않고 `[NNFC equipment reference requires engineer confirmation]` 형태의 알림으로 부드럽게 치환하여 엔지니어의 확정을 유도합니다.
-- **Alibaba LLM 네이티브 연동 및 Reasoning Block 정제**: 프론트엔드 라우터에 Alibaba 모델 지원을 공식 추가했습니다. 또한 DeepSeek, Solar 등 추론형(Reasoning) 모델들이 출력하는 `<think>`, `<details>`, ````thinking```` 등 내부 사고 과정을 파싱 단계에서 자동으로 제거하여, 보고서 결과물에 불필요한 메타 텍스트가 노출되지 않도록 UI 파이프라인을 정제했습니다.
-- **시간대(Timezone) 라이브러리 현대화**: 외부 의존성인 `pytz` 모듈을 완전히 제거하고, Python 3.9+ 표준 라이브러리인 `zoneinfo.ZoneInfo`로 모든 도메인 프롬프트의 시간대 처리 로직을 마이그레이션하여 성능과 호환성을 높였습니다.
+- **Link Vault 문맥 검증의 완전한 DAG 통합**: `[Source 1]` 형태의 URL 주입 로직을 프롬프트에서 완전히 분리(`DEPRECATED: URL MANAGEMENT NOW HANDLED BY LINK VAULT`)하고, 중앙 상태 객체(`PipelineState`)에 `link_vault`를 네이티브로 통합했습니다. 이제 LLM은 URL을 전혀 생성하지 않으며 백엔드가 안전하게 출처를 주입합니다.
+- **NNFC 장비 초기 매칭의 결정론적 전환**: 기존 LLM 프롬프트 주입 기반의 장비 후보 선정 방식을 프로그램 기반의 결정론적 검색(`search_combined`, `suggest_equipment`)으로 전면 개편했습니다. 장비 제약(가스, 온도, 웨이퍼 크기)에 충돌이 발생할 경우 `_nnfc_alternative_equipment()`를 통해 DB 기반 대안 장비를 자동 추천하도록 보완했습니다.
+- **추정값(EST) 허용 금지 및 엄격한 출처 표기**: NNFC 프롬프트에서 공정 엔지니어링 추정값을 허용하던 `[EST: 표준 공정 기준]` 태그를 제거했습니다. DB에 존재하지 않는 파라미터는 LLM이 임의로 추정하지 않고 반드시 `N/A [DB 미포함 - 담당자 확인 필요]`로 명시하도록 강제하여 할루시네이션을 원천 봉쇄했습니다.
+- **알리바바 딥시크(DeepSeek) / Qwen 추론 모델 정식 지원**: Backend 라우터(`llm_providers.py`)에 AlibabaProvider(`deepseek-v4-pro`, `qwen3.6-plus`)를 추가하고 `supports_reasoning=True` 속성을 부여하여, 생각하는 과정(Reasoning trace)을 지원하는 최신 모델들을 파이프라인에 통합했습니다.
+- **구조화된 JSON 출력 강화 및 코드베이스 경량화**: XML 기반의 잔재를 걷어내고 완벽한 JSON Schema 기반으로 QA 및 Review 게이트를 통일했습니다. 아울러 불필요하게 방대했던 영문 Docstring들을 일괄 제거하여 엔진 코드를 경량화하고 유지보수성을 극대화했습니다.
 
 
 ---
@@ -190,7 +191,7 @@ Public repository에서 제외되는 항목:
 ## License and Rights
 
 - Documentation license: [Minseok Song & Company Technical Report Sharing License v1.0](LICENSE)
-- Patent reference: KR 10-2026-0009508
+- Patent: Pending
 - Copyright: 2025-2026 Minseok Song
 - Author: Minseok Song & Company
 
